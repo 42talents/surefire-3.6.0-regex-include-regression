@@ -1,0 +1,40 @@
+name: Surefire regex-include regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: surefire ${{ matrix.surefire-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        surefire-version: [3.5.6, 3.6.0]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: mvn test (surefire ${{ matrix.surefire-version }})
+        run: mvn -B test -Dsurefire.version=${{ matrix.surefire-version }}
+
+      - name: Assert PlainTest actually ran
+        run: |
+          REPORT=target/surefire-reports/repro.PlainTest.txt
+          if [ ! -f "$REPORT" ]; then
+            echo "::error::$REPORT does not exist - PlainTest never ran (Surefire ${{ matrix.surefire-version }} silently dropped it)"
+            exit 1
+          fi
+          if ! grep -q "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0" "$REPORT"; then
+            echo "::error::$REPORT does not report the expected single passing test"
+            cat "$REPORT"
+            exit 1
+          fi
+          echo "PlainTest ran and passed as expected."

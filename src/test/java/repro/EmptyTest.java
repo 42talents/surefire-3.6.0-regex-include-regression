@@ -1,0 +1,4 @@
+package repro;
+
+class EmptyTest {
+}
