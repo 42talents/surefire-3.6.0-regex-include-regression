@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        surefire-version: [3.5.6, 3.6.0, 3.6.1]
+        surefire-version: [3.5.6, 3.6.1]
     steps:
       - uses: actions/checkout@v7
 

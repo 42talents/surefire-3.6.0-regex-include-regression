@@ -8,8 +8,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <!-- Toggle via -Dsurefire.version=3.5.6 (works) or 3.6.0 (broken, default) -->
-        <surefire.version>3.6.0</surefire.version>
+        <!-- Toggle via -Dsurefire.version=3.5.6 (works); 3.6.0 was broken, fixed in 3.6.1 (default) -->
+        <surefire.version>3.6.1</surefire.version>
     </properties>
     <dependencies>
         <dependency>
